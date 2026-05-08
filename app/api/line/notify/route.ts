@@ -9,7 +9,18 @@ export async function POST() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // 水管理チェックが必要な田んぼを取得（現在時刻以前）
+  // 自分のLINE連携情報を取得
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('line_user_id')
+    .eq('id', user.id)
+    .single()
+
+  if (!profile?.line_user_id) {
+    return NextResponse.json({ sent: 0, message: 'LINE未連携' })
+  }
+
+  // 自分の水管理チェックが必要な田んぼを取得（RLSにより自分のデータのみ）
   const { data: fields } = await supabase
     .from('fields')
     .select('name, next_water_check')
@@ -20,16 +31,6 @@ export async function POST() {
     return NextResponse.json({ sent: 0, message: '対象の田んぼなし' })
   }
 
-  // LINE連携済みユーザー全員に通知
-  const { data: profiles } = await supabase
-    .from('profiles')
-    .select('line_user_id')
-    .not('line_user_id', 'is', null)
-
-  if (!profiles || profiles.length === 0) {
-    return NextResponse.json({ sent: 0, message: 'LINE連携ユーザーなし' })
-  }
-
   const fieldList = fields.map(f => {
     const dt = new Date(f.next_water_check!)
     const label = dt.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
@@ -37,16 +38,15 @@ export async function POST() {
   }).join('\n')
   const message = `🌾 水管理チェックのお知らせ\n\n以下の田んぼの水管理を確認してください：\n${fieldList}`
 
-  let sent = 0
-  for (const profile of profiles) {
-    if (!profile.line_user_id) continue
-    const res = await fetch('https://api.line.me/v2/bot/message/push', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ to: profile.line_user_id, messages: [{ type: 'text', text: message }] }),
-    })
-    if (res.ok) sent++
+  const res = await fetch('https://api.line.me/v2/bot/message/push', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ to: profile.line_user_id, messages: [{ type: 'text', text: message }] }),
+  })
+
+  if (!res.ok) {
+    return NextResponse.json({ error: 'LINE送信失敗' }, { status: 500 })
   }
 
-  return NextResponse.json({ sent, fields: fields.length })
+  return NextResponse.json({ sent: 1, fields: fields.length })
 }

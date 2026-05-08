@@ -10,11 +10,12 @@ export default async function MapPage({
 }) {
   const { work_type } = await searchParams
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const [fieldsRes, workRecordsRes, workTypesRes] = await Promise.all([
-    supabase.from('fields').select('*'),
-    supabase.from('work_records').select('*'),
-    supabase.from('work_types').select('*').order('sort_order'),
+    supabase.from('fields').select('*').eq('user_id', user!.id),
+    supabase.from('work_records').select('*').eq('user_id', user!.id),
+    supabase.from('work_types').select('*').eq('user_id', user!.id).order('sort_order'),
   ])
 
   const fields = fieldsRes.data ?? []

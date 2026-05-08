@@ -10,6 +10,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [done, setDone] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
@@ -22,7 +23,7 @@ export default function SignupPage() {
     setLoading(true)
     setError('')
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name } },
@@ -33,10 +34,33 @@ export default function SignupPage() {
         ? 'このメールアドレスは既に登録されています'
         : '登録に失敗しました: ' + error.message)
       setLoading(false)
-    } else {
+      return
+    }
+
+    // メール確認が不要（セッションが即時発行された）場合はそのままマップへ
+    if (data.session) {
       router.push('/map')
       router.refresh()
+    } else {
+      // メール確認が必要な場合は案内画面を表示
+      setDone(true)
     }
+  }
+
+  if (done) {
+    return (
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm text-center">
+        <div className="text-4xl mb-4">📧</div>
+        <h2 className="text-xl font-bold text-gray-800 mb-2">確認メールを送信しました</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          <strong>{email}</strong> に確認メールを送りました。<br />
+          メール内のリンクをクリックしてからログインしてください。
+        </p>
+        <Link href="/login" className="text-green-600 hover:underline text-sm font-medium">
+          ログイン画面へ →
+        </Link>
+      </div>
+    )
   }
 
   return (

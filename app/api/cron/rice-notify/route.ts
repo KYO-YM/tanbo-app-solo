@@ -4,13 +4,14 @@ import { calcRiceSchedule } from '@/lib/utils/rice'
 import type { Field } from '@/lib/supabase/types'
 
 export async function GET(req: Request) {
-  // CRON_SECRET が設定されている場合のみ認証チェック（未設定なら手動実行として許可）
+  // CRON_SECRET による認証（未設定の場合は常に拒否）
   const cronSecret = process.env.CRON_SECRET
-  if (cronSecret) {
-    const authHeader = req.headers.get('authorization')
-    if (authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  if (!cronSecret) {
+    return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 503 })
+  }
+  const authHeader = req.headers.get('authorization')
+  if (authHeader !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const token = process.env.LINE_CHANNEL_ACCESS_TOKEN

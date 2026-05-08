@@ -97,3 +97,6 @@ CREATE TRIGGER fields_updated_at
 CREATE TRIGGER work_records_updated_at
   BEFORE UPDATE ON work_records
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- line_link_code（LINE連携コード）
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS line_link_code TEXT UNIQUE;
