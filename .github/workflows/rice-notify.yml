@@ -1,0 +1,19 @@
+name: 水稲スケジュール通知
+
+on:
+  schedule:
+    # 毎朝6:00 JST (= 21:00 UTC 前日)
+    - cron: '0 21 * * *'
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 水稲スケジュール LINE通知を送信
+        run: |
+          curl -s -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/rice-notify" \
+            -o response.json
+          cat response.json
