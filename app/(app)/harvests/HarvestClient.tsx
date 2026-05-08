@@ -9,6 +9,7 @@ interface FieldWithArea {
   name: string
   areaM2: number
   areaLabel: string
+  target_kg_per_10a: number | null
 }
 
 interface Props {
@@ -179,7 +180,15 @@ export default function HarvestClient({ fields, initialHarvests }: Props) {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-gray-800">{f.name}</div>
-                  <div className="text-xs text-gray-400">{f.areaLabel}</div>
+                  <div className="text-xs text-gray-400">
+                    {f.areaLabel}
+                    {f.target_kg_per_10a && (
+                      <span className="ml-2 text-amber-600">
+                        目標: {f.target_kg_per_10a}kg/10a
+                        {f.areaM2 > 0 && ` (計${Math.round(f.target_kg_per_10a * f.areaM2 / 1000)}kg)`}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 {hasData && !dirty && (
                   <button onClick={() => remove(f.id)} disabled={deleting[f.id]} className="p-2 text-gray-300 hover:text-red-500 disabled:opacity-50">
@@ -246,7 +255,12 @@ export default function HarvestClient({ fields, initialHarvests }: Props) {
               return (
                 <tr key={f.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium text-gray-800">{f.name}</td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">{f.areaLabel}</td>
+                  <td className="px-4 py-3 text-gray-500 text-xs">
+                    <div>{f.areaLabel}</div>
+                    {f.target_kg_per_10a && (
+                      <div className="text-amber-600">目標{f.target_kg_per_10a}kg/10a</div>
+                    )}
+                  </td>
                   <td className="px-4 py-3">
                     <div className="space-y-0.5">
                       <input

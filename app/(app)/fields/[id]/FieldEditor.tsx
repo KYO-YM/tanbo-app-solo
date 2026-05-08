@@ -11,6 +11,7 @@ export default function FieldEditor({ field }: Props) {
   const [name, setName] = useState(field.name)
   const [owner, setOwner] = useState(field.owner ?? '')
   const [notes, setNotes] = useState(field.notes ?? '')
+  const [targetKg, setTargetKg] = useState(field.target_kg_per_10a?.toString() ?? '')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -19,7 +20,7 @@ export default function FieldEditor({ field }: Props) {
     await fetch('/api/fields', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: field.id, name, owner: owner || null, notes: notes || null }),
+      body: JSON.stringify({ id: field.id, name, owner: owner || null, notes: notes || null, target_kg_per_10a: targetKg ? parseFloat(targetKg) : null }),
     })
     setLoading(false)
     setEditing(false)
@@ -70,6 +71,13 @@ export default function FieldEditor({ field }: Props) {
           <label className="block text-xs font-medium text-gray-600 mb-1">備考</label>
           <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={2}
             className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm resize-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">目標収量（kg/10a）</label>
+          <input type="number" min="0" step="10" placeholder="例: 530" value={targetKg}
+            onChange={e => setTargetKg(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm" />
+          <p className="text-xs text-gray-400 mt-0.5">10アール当たりの目標収量。収穫量ページで達成状況を確認できます。</p>
         </div>
         <button
           onClick={handleSave}

@@ -46,3 +46,17 @@ CREATE POLICY "expenses_delete" ON expenses FOR DELETE USING (auth.uid() = user_
 CREATE POLICY "field_photos_select" ON field_photos FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "field_photos_insert" ON field_photos FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "field_photos_delete" ON field_photos FOR DELETE USING (auth.uid() = user_id);
+
+-- 農薬・肥料記録
+ALTER TABLE pesticide_records ENABLE ROW LEVEL SECURITY;
+CREATE POLICY IF NOT EXISTS "pesticide_select" ON pesticide_records FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "pesticide_insert" ON pesticide_records FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "pesticide_update" ON pesticide_records FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "pesticide_delete" ON pesticide_records FOR DELETE USING (auth.uid() = user_id);
+
+-- 作業日誌
+ALTER TABLE work_diary ENABLE ROW LEVEL SECURITY;
+CREATE POLICY IF NOT EXISTS "diary_select" ON work_diary FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "diary_insert" ON work_diary FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "diary_update" ON work_diary FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "diary_delete" ON work_diary FOR DELETE USING (auth.uid() = user_id);

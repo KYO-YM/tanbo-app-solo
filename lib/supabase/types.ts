@@ -1,5 +1,5 @@
 export type WorkStatus = 'pending' | 'in_progress' | 'done'
-export type UserRole = 'admin' | 'worker'
+export type UserRole = 'admin' | 'worker' | null
 
 export interface GeoJSONPolygon {
   type: 'Polygon'
@@ -17,6 +17,7 @@ export interface Field {
   next_water_check: string | null
   transplant_date: string | null
   variety: string | null
+  target_kg_per_10a: number | null
   created_at: string
   updated_at: string
 }

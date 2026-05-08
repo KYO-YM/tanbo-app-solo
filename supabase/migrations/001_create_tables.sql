@@ -100,3 +100,31 @@ CREATE TRIGGER work_records_updated_at
 
 -- line_link_code（LINE連携コード）
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS line_link_code TEXT UNIQUE;
+
+-- 農薬・肥料記録テーブル
+CREATE TABLE IF NOT EXISTS pesticide_records (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  field_id   UUID REFERENCES fields(id) ON DELETE SET NULL,
+  date       DATE NOT NULL,
+  type       TEXT NOT NULL CHECK (type IN ('農薬', '肥料')),
+  name       TEXT NOT NULL,
+  amount     NUMERIC(8,2),
+  unit       TEXT DEFAULT 'L',
+  purpose    TEXT,
+  note       TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 作業日誌テーブル
+CREATE TABLE IF NOT EXISTS work_diary (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  date       DATE NOT NULL,
+  weather    TEXT,
+  content    TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 目標収量（田んぼごと）
+ALTER TABLE fields ADD COLUMN IF NOT EXISTS target_kg_per_10a NUMERIC(6,1);
