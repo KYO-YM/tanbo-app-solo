@@ -100,20 +100,22 @@ export default function DiaryClient() {
   return (
     <div className="space-y-4">
       {/* 月ナビゲーション */}
-      <div className="flex items-center gap-3">
-        <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-          <ChevronLeft size={18} />
-        </button>
-        <span className="text-lg font-bold text-gray-800 w-24 text-center">
-          {year}年{month}月
-        </span>
-        <button onClick={nextMonth} disabled={isLatest}
-          className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
-          <ChevronRight size={18} />
-        </button>
-        <span className="ml-2 text-xs text-gray-400">{entries.length}件</span>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <button onClick={prevMonth} className="p-2.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <ChevronLeft size={18} />
+          </button>
+          <span className="text-lg font-bold text-gray-800 w-28 text-center">
+            {year}年{month}月
+          </span>
+          <button onClick={nextMonth} disabled={isLatest}
+            className="p-2.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
+            <ChevronRight size={18} />
+          </button>
+          <span className="text-xs text-gray-400">{entries.length}件</span>
+        </div>
         <button onClick={() => setShowForm(v => !v)}
-          className="ml-auto flex items-center gap-1.5 px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 transition-colors">
+          className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-amber-500 text-white rounded-xl text-sm font-medium hover:bg-amber-600 transition-colors">
           <Plus size={15} /> 日誌を書く
         </button>
       </div>
@@ -121,24 +123,22 @@ export default function DiaryClient() {
       {/* 入力フォーム */}
       {showForm && (
         <div className="bg-white rounded-xl shadow p-4 space-y-3 border border-amber-100">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">日付 *</label>
-              <input type="date" value={form.date}
-                onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" />
-            </div>
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">天気</label>
-              <div className="flex flex-wrap gap-1">
-                {WEATHERS.map(w => (
-                  <button key={w.value} onClick={() => setForm(f => ({ ...f, weather: f.weather === w.value ? '' : w.value }))}
-                    className={`px-2 py-1 rounded-lg text-xs border transition-colors ${form.weather === w.value ? 'bg-blue-100 border-blue-300 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'}`}
-                    title={w.value}>
-                    {w.emoji} {w.value}
-                  </button>
-                ))}
-              </div>
+          <div>
+            <label className="text-xs text-gray-500 mb-1 block">日付 *</label>
+            <input type="date" value={form.date}
+              onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
+              className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-400" />
+          </div>
+          <div>
+            <label className="text-xs text-gray-500 mb-1 block">天気</label>
+            <div className="flex flex-wrap gap-2">
+              {WEATHERS.map(w => (
+                <button key={w.value} onClick={() => setForm(f => ({ ...f, weather: f.weather === w.value ? '' : w.value }))}
+                  className={`px-3 py-2 rounded-lg text-sm border transition-colors ${form.weather === w.value ? 'bg-blue-100 border-blue-300 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'}`}
+                  title={w.value}>
+                  {w.emoji} {w.value}
+                </button>
+              ))}
             </div>
           </div>
           <div>
@@ -146,9 +146,9 @@ export default function DiaryClient() {
             <textarea
               value={form.content}
               onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
-              placeholder="例: 北の田んぼでいもち病の初発を確認。早急に薬剤散布を検討。水の色が少し濁っていたので排水溝を確認した。"
+              placeholder="例: 北の田んぼでいもち病の初発を確認。早急に薬剤散布を検討。"
               rows={4}
-              className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
+              className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
             />
           </div>
           <div className="flex gap-2">
@@ -199,29 +199,29 @@ export default function DiaryClient() {
                       <span className="text-xs text-gray-500">{entry.weather}</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5">
                     {!isEditing && (
                       <button onClick={() => { setEditId(entry.id); setEditContent(entry.content) }}
-                        className="p-1.5 text-gray-300 hover:text-blue-500 transition-colors">
-                        <Pencil size={14} />
+                        className="p-2.5 text-gray-300 hover:text-blue-500 transition-colors">
+                        <Pencil size={16} />
                       </button>
                     )}
                     {isEditing && (
                       <>
                         <button onClick={() => handleUpdate(entry.id)}
-                          className="p-1.5 text-green-500 hover:text-green-700 transition-colors">
-                          <Check size={15} />
+                          className="p-2.5 text-green-500 hover:text-green-700 transition-colors">
+                          <Check size={17} />
                         </button>
                         <button onClick={() => setEditId(null)}
-                          className="p-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-                          <X size={15} />
+                          className="p-2.5 text-gray-400 hover:text-gray-600 transition-colors">
+                          <X size={17} />
                         </button>
                       </>
                     )}
                     {!isEditing && (
                       <button onClick={() => handleDelete(entry.id)}
-                        className="p-1.5 text-gray-300 hover:text-red-500 transition-colors">
-                        <Trash2 size={14} />
+                        className="p-2.5 text-gray-300 hover:text-red-500 transition-colors">
+                        <Trash2 size={16} />
                       </button>
                     )}
                   </div>
@@ -231,7 +231,7 @@ export default function DiaryClient() {
                     value={editContent}
                     onChange={e => setEditContent(e.target.value)}
                     rows={3}
-                    className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
+                    className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
                     autoFocus
                   />
                 ) : (

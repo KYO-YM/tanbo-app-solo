@@ -93,22 +93,24 @@ export default async function WeatherWidget({ lat, lon, locationName }: Props) {
         </div>
       </div>
 
-      {/* 6日分の予報 */}
-      <div className="grid grid-cols-6 gap-1">
-        {days.slice(1).map((day, i) => {
-          const info = weatherInfo(day.code)
-          return (
-            <div key={day.date} className="flex flex-col items-center text-center gap-0.5">
-              <span className="text-xs text-gray-500">{formatDate(day.date, i + 1)}</span>
-              <span className="text-lg">{info.emoji}</span>
-              <span className="text-xs font-medium text-red-500">{day.maxTemp}°</span>
-              <span className="text-xs text-blue-400">{day.minTemp}°</span>
-              {day.precipitation > 0 && (
-                <span className="text-[10px] text-blue-400">{day.precipitation.toFixed(0)}mm</span>
-              )}
-            </div>
-          )
-        })}
+      {/* 6日分の予報（横スクロール対応） */}
+      <div className="overflow-x-auto -mx-4 px-4">
+        <div className="flex gap-2 min-w-max">
+          {days.slice(1).map((day, i) => {
+            const info = weatherInfo(day.code)
+            return (
+              <div key={day.date} className="flex flex-col items-center text-center gap-0.5 w-12">
+                <span className="text-xs text-gray-500 whitespace-nowrap">{formatDate(day.date, i + 1)}</span>
+                <span className="text-xl">{info.emoji}</span>
+                <span className="text-xs font-medium text-red-500">{day.maxTemp}°</span>
+                <span className="text-xs text-blue-400">{day.minTemp}°</span>
+                {day.precipitation > 0 && (
+                  <span className="text-[10px] text-blue-400">{day.precipitation.toFixed(0)}mm</span>
+                )}
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

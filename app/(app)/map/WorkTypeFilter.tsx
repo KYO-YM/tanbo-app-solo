@@ -19,31 +19,33 @@ export default function WorkTypeFilter({ workTypes, selectedId }: Props) {
   }
 
   return (
-    <div className="absolute top-4 left-4 z-[1000] flex gap-2 flex-wrap max-w-[calc(100%-2rem)]">
-      <button
-        onClick={() => select(null)}
-        className={`px-3 py-2 rounded-full text-xs font-medium border shadow-sm transition-colors ${
-          !selectedId
-            ? 'bg-green-700 text-white border-green-700'
-            : 'bg-white text-gray-700 border-gray-300 hover:border-green-400'
-        }`}
-      >
-        すべて
-      </button>
-      {workTypes.map(wt => (
+    <div className="absolute top-3 left-14 right-3 z-[1000]">
+      <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <button
-          key={wt.id}
-          onClick={() => select(wt.id)}
-          className={`px-3 py-2 rounded-full text-xs font-medium border shadow-sm transition-colors ${
-            selectedId === wt.id
-              ? 'text-white border-transparent'
+          onClick={() => select(null)}
+          className={`flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium border shadow-sm transition-colors ${
+            !selectedId
+              ? 'bg-green-700 text-white border-green-700'
               : 'bg-white text-gray-700 border-gray-300'
           }`}
-          style={selectedId === wt.id ? { backgroundColor: wt.color, borderColor: wt.color } : {}}
         >
-          {wt.name}
+          すべて
         </button>
-      ))}
+        {workTypes.map(wt => (
+          <button
+            key={wt.id}
+            onClick={() => select(wt.id)}
+            className={`flex-shrink-0 px-3 py-2 rounded-full text-xs font-medium border shadow-sm transition-colors ${
+              selectedId === wt.id
+                ? 'text-white border-transparent'
+                : 'bg-white text-gray-700 border-gray-300'
+            }`}
+            style={selectedId === wt.id ? { backgroundColor: wt.color, borderColor: wt.color } : {}}
+          >
+            {wt.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

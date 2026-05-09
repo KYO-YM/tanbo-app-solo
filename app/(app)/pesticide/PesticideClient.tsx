@@ -122,67 +122,70 @@ export default function PesticideClient({ fields }: { fields: Field[] }) {
   return (
     <div className="space-y-4">
       {/* ヘッダー操作 */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <button onClick={() => setYear(y => y - 1)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-          <ChevronLeft size={18} />
-        </button>
-        <span className="text-lg font-bold text-gray-800 w-16 text-center">{year}年</span>
-        <button onClick={() => setYear(y => y + 1)} disabled={year >= currentYear} className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
-          <ChevronRight size={18} />
-        </button>
-
-        {/* タイプフィルター */}
-        <div className="flex gap-1 ml-2">
-          {(['全て', '農薬', '肥料'] as const).map(t => (
-            <button key={t} onClick={() => setFilterType(t)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${filterType === t ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-              {t}
-            </button>
-          ))}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          {/* 年ナビ */}
+          <button onClick={() => setYear(y => y - 1)} className="p-2.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <ChevronLeft size={18} />
+          </button>
+          <span className="text-lg font-bold text-gray-800 w-16 text-center">{year}年</span>
+          <button onClick={() => setYear(y => y + 1)} disabled={year >= currentYear} className="p-2.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
+            <ChevronRight size={18} />
+          </button>
+          {/* タイプフィルター */}
+          <div className="flex gap-1 ml-1">
+            {(['全て', '農薬', '肥料'] as const).map(t => (
+              <button key={t} onClick={() => setFilterType(t)}
+                className={`px-3 py-2 rounded-full text-xs font-medium transition-colors ${filterType === t ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                {t}
+              </button>
+            ))}
+          </div>
         </div>
-
-        <div className="ml-auto flex gap-2">
+        <div className="flex gap-2">
+          <button onClick={() => setShowForm(v => !v)}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-green-600 text-white rounded-xl text-sm font-medium hover:bg-green-700 transition-colors">
+            <Plus size={15} /> 記録を追加
+          </button>
           {filtered.length > 0 && (
             <button onClick={downloadCSV}
-              className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors">
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-gray-100 text-gray-600 rounded-xl text-sm font-medium hover:bg-gray-200 transition-colors">
               <Download size={14} /> CSV
             </button>
           )}
-          <button onClick={() => setShowForm(v => !v)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-            <Plus size={15} /> 記録を追加
-          </button>
         </div>
       </div>
 
       {/* 入力フォーム */}
       {showForm && (
         <div className="bg-white rounded-xl shadow p-4 space-y-3 border border-green-100">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-3">
             {/* 種別 */}
             <div>
               <label className="text-xs text-gray-500 mb-1 block">種別 *</label>
               <div className="flex gap-2">
                 {(['農薬', '肥料'] as const).map(t => (
                   <button key={t} onClick={() => setField('type', t)}
-                    className={`flex-1 py-2 rounded-lg text-sm font-medium border transition-colors ${form.type === t ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}>
+                    className={`flex-1 py-3 rounded-lg text-sm font-medium border transition-colors ${form.type === t ? 'bg-green-600 text-white border-green-600' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}`}>
                     {t === '農薬' ? '🧪 農薬' : '🌿 肥料'}
                   </button>
                 ))}
               </div>
             </div>
-            {/* 日付 */}
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">使用日 *</label>
-              <input type="date" value={form.date} onChange={e => setField('date', e.target.value)}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
-            </div>
-            {/* 製品名 */}
-            <div className="col-span-2">
-              <label className="text-xs text-gray-500 mb-1 block">製品名 *</label>
-              <input type="text" placeholder="例: ジェット水和剤、NK化成" value={form.name}
-                onChange={e => setField('name', e.target.value)}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* 日付 */}
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">使用日 *</label>
+                <input type="date" value={form.date} onChange={e => setField('date', e.target.value)}
+                  className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400" />
+              </div>
+              {/* 製品名 */}
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">製品名 *</label>
+                <input type="text" placeholder="例: ジェット水和剤" value={form.name}
+                  onChange={e => setField('name', e.target.value)}
+                  className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400" />
+              </div>
             </div>
             {/* 使用量 */}
             <div>
@@ -190,35 +193,37 @@ export default function PesticideClient({ fields }: { fields: Field[] }) {
               <div className="flex gap-1">
                 <input type="number" min="0" step="0.01" placeholder="例: 1.5" value={form.amount}
                   onChange={e => setField('amount', e.target.value)}
-                  className="flex-1 border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
+                  className="flex-1 border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400" />
                 <select value={form.unit} onChange={e => setField('unit', e.target.value)}
-                  className="w-20 border rounded-lg px-2 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+                  className="w-24 border rounded-lg px-2 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400">
                   {units.map(u => <option key={u} value={u}>{u}</option>)}
                 </select>
               </div>
             </div>
-            {/* 使用圃場 */}
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">使用圃場</label>
-              <select value={form.field_id} onChange={e => setField('field_id', e.target.value)}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
-                <option value="">全圃場（共通）</option>
-                {fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-              </select>
-            </div>
-            {/* 使用目的 */}
-            <div>
-              <label className="text-xs text-gray-500 mb-1 block">使用目的・対象病害虫</label>
-              <input type="text" placeholder="例: いもち病防除" value={form.purpose}
-                onChange={e => setField('purpose', e.target.value)}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* 使用圃場 */}
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">使用圃場</label>
+                <select value={form.field_id} onChange={e => setField('field_id', e.target.value)}
+                  className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400">
+                  <option value="">全圃場（共通）</option>
+                  {fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                </select>
+              </div>
+              {/* 使用目的 */}
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">使用目的・対象病害虫</label>
+                <input type="text" placeholder="例: いもち病防除" value={form.purpose}
+                  onChange={e => setField('purpose', e.target.value)}
+                  className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400" />
+              </div>
             </div>
             {/* 備考 */}
             <div>
               <label className="text-xs text-gray-500 mb-1 block">備考</label>
               <input type="text" placeholder="希釈倍率など" value={form.note}
                 onChange={e => setField('note', e.target.value)}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
+                className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-green-400" />
             </div>
           </div>
           <div className="flex gap-2">

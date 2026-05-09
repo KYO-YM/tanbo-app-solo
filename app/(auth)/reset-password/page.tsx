@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-      <h1 className="text-2xl font-bold text-center mb-2 text-green-700">🌾 田んぼ管理</h1>
+      <h1 className="text-2xl font-bold text-center mb-2 text-green-700">🌾 みのり</h1>
       <p className="text-center text-sm text-gray-400 mb-6">新しいパスワードを設定</p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

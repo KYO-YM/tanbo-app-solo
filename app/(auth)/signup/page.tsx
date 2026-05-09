@@ -73,7 +73,7 @@ export default function SignupPage() {
 
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-      <h1 className="text-2xl font-bold text-center mb-2 text-green-700">🌾 田んぼ管理</h1>
+      <h1 className="text-2xl font-bold text-center mb-2 text-green-700">🌾 みのり</h1>
       <p className="text-center text-sm text-gray-400 mb-6">新規アカウント登録</p>
       <form onSubmit={handleSignup} className="space-y-4">
         <div>

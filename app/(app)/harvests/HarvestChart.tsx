@@ -26,7 +26,7 @@ export default function HarvestChart({ data }: Props) {
             width={60}
           />
           <Tooltip
-            formatter={(value: number) => [`${value.toLocaleString()} kg`, '収穫量']}
+            formatter={(value) => [`${Number(value).toLocaleString()} kg`, '収穫量']}
             labelFormatter={label => `${label}年`}
             contentStyle={{ fontSize: 12, borderRadius: 8 }}
           />

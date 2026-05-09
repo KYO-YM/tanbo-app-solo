@@ -90,17 +90,19 @@ export default function ExpenseClient({ fields }: { fields: Field[] }) {
   return (
     <div className="space-y-4">
       {/* 年度セレクター */}
-      <div className="flex items-center gap-3">
-        <button onClick={() => setYear(y => y - 1)} className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-          <ChevronLeft size={18} />
-        </button>
-        <span className="text-lg font-bold text-gray-800 w-16 text-center">{year}年</span>
-        <button onClick={() => setYear(y => y + 1)} disabled={year >= currentYear} className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
-          <ChevronRight size={18} />
-        </button>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <button onClick={() => setYear(y => y - 1)} className="p-2.5 rounded-lg hover:bg-gray-100 transition-colors">
+            <ChevronLeft size={18} />
+          </button>
+          <span className="text-lg font-bold text-gray-800 w-16 text-center">{year}年</span>
+          <button onClick={() => setYear(y => y + 1)} disabled={year >= currentYear} className="p-2.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 transition-colors">
+            <ChevronRight size={18} />
+          </button>
+        </div>
         <button
           onClick={() => setShowForm(v => !v)}
-          className="ml-auto flex items-center gap-1.5 px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+          className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-purple-600 text-white rounded-xl text-sm font-medium hover:bg-purple-700 transition-colors"
         >
           <Plus size={15} /> 費用を追加
         </button>
@@ -109,11 +111,11 @@ export default function ExpenseClient({ fields }: { fields: Field[] }) {
       {/* 入力フォーム */}
       {showForm && (
         <div className="bg-white rounded-xl shadow p-4 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-gray-500 mb-1 block">カテゴリ *</label>
               <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value as Category }))}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+                className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-purple-400">
                 {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
@@ -121,12 +123,12 @@ export default function ExpenseClient({ fields }: { fields: Field[] }) {
               <label className="text-xs text-gray-500 mb-1 block">金額（円）*</label>
               <input type="number" min="0" placeholder="例: 5000" value={form.amount}
                 onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-purple-400" />
             </div>
             <div>
               <label className="text-xs text-gray-500 mb-1 block">田んぼ</label>
               <select value={form.field_id} onChange={e => setForm(f => ({ ...f, field_id: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400">
+                className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-purple-400">
                 <option value="">全体（田んぼ指定なし）</option>
                 {fields.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
               </select>
@@ -134,14 +136,14 @@ export default function ExpenseClient({ fields }: { fields: Field[] }) {
             <div>
               <label className="text-xs text-gray-500 mb-1 block">日付</label>
               <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-purple-400" />
             </div>
           </div>
           <div>
             <label className="text-xs text-gray-500 mb-1 block">メモ</label>
             <input type="text" placeholder="品名・備考など" value={form.note}
               onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
-              className="w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400" />
+              className="w-full border rounded-lg px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-purple-400" />
           </div>
           <div className="flex gap-2">
             <button onClick={handleAdd} disabled={saving || !form.amount}

@@ -1,11 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
 import PesticideClient from './PesticideClient'
+import DilutionCalculator from './DilutionCalculator'
 
 export default async function PesticidePage() {
   const supabase = await createClient()
   const { data: fields } = await supabase
     .from('fields')
-    .select('id, name')
+    .select('id, name, area_ha')
     .order('name')
 
   return (
@@ -17,6 +18,7 @@ export default async function PesticidePage() {
           <p className="text-xs text-gray-400 mt-0.5">農薬取締法に基づく使用記録</p>
         </div>
       </div>
+      <DilutionCalculator fields={fields ?? []} />
       <PesticideClient fields={fields ?? []} />
     </div>
   )

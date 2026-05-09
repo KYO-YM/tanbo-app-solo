@@ -117,16 +117,15 @@ export default function HarvestClient({ fields, initialHarvests }: Props) {
       </div>
 
       {/* 概算単価入力 */}
-      <div className="bg-white rounded-xl shadow px-4 py-3 flex items-center gap-3">
-        <span className="text-sm text-gray-600 flex-shrink-0">概算単価</span>
+      <div className="bg-white rounded-xl shadow px-4 py-3 space-y-2 sm:space-y-0 sm:flex sm:items-center sm:gap-3">
+        <span className="text-sm text-gray-600 flex-shrink-0">概算単価（円/kg）</span>
         <input
           type="number" min="0" placeholder="例: 280"
           value={unitPrice}
           onChange={e => setUnitPrice(e.target.value)}
-          className="w-28 border rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full sm:w-32 border rounded-lg px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
-        <span className="text-sm text-gray-400">円/kg</span>
-        {unitPrice && <span className="text-xs text-gray-400 ml-auto">収益 = 収穫量 × 単価 で計算</span>}
+        {unitPrice && <span className="text-xs text-gray-400">収益 = 収穫量 × 単価 で計算</span>}
       </div>
 
       {/* サマリー */}

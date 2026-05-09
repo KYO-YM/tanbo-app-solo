@@ -15,13 +15,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "田んぼ管理",
+  title: "みのり",
   description: "田んぼの所有区画と作業進捗を地図で管理するアプリ",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "田んぼ管理",
+    title: "みのり",
   },
   icons: {
     icon: [
@@ -37,6 +37,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   themeColor: "#15803d",
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({

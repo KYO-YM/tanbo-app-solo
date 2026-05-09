@@ -7,6 +7,7 @@ import { STATUS_COLORS, DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM } from '@/lib/const
 import { useRealtimeSync } from '@/hooks/useRealtimeSync'
 import FieldPanel from './FieldPanel'
 import MapLegend from './MapLegend'
+import FieldSelectorPanel from './FieldSelectorPanel'
 
 interface Props {
   fields: Field[]
@@ -59,10 +60,23 @@ export default function MapView({ fields, workRecords, workTypes, selectedWorkTy
     }
   }, [fields, localRecords, selectedWorkTypeId])
 
+  function handleFieldSelect(field: Field) {
+    setSelectedField(field)
+    if (!mapRef.current) return
+    const layer = L.geoJSON(field.geometry as GeoJSON.Geometry)
+    mapRef.current.fitBounds(layer.getBounds(), { padding: [60, 60], maxZoom: 17 })
+  }
+
   return (
     <div className="relative w-full h-[calc(100vh-56px)]">
       <div ref={containerRef} className="w-full h-full" />
       <MapLegend />
+      <FieldSelectorPanel
+        fields={fields}
+        workRecords={localRecords}
+        selectedWorkTypeId={selectedWorkTypeId}
+        onSelect={handleFieldSelect}
+      />
       {selectedField && (
         <FieldPanel
           field={selectedField}

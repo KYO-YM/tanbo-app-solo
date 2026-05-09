@@ -27,7 +27,7 @@ export default function NavMenu({ userName }: Props) {
 
   return (
     <>
-      {/* デスクトップ */}
+      {/* デスクトップ: ナビリンク */}
       <nav className="hidden sm:flex gap-3 text-sm">
         {links.map(l => (
           <Link key={l.href} href={l.href} className="hover:underline opacity-90 hover:opacity-100">
@@ -38,32 +38,36 @@ export default function NavMenu({ userName }: Props) {
 
       {/* モバイル: ハンバーガーボタン */}
       <button
-        className="sm:hidden p-1 rounded hover:bg-green-600 transition-colors"
+        className="sm:hidden p-2.5 rounded-lg hover:bg-green-600 transition-colors"
         onClick={() => setOpen(v => !v)}
         aria-label="メニューを開く"
       >
-        {open ? <X size={22} /> : <Menu size={22} />}
+        <Menu size={22} />
       </button>
 
-      {/* モバイル: ドロワー */}
+      {/* モバイル: ドロワー（右から） */}
       {open && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/30" onClick={() => setOpen(false)} />
-          <div className="fixed top-0 left-0 z-50 h-full w-64 bg-green-700 text-white shadow-xl flex flex-col">
-            <div className="flex items-center justify-between px-4 py-4 border-b border-green-600">
-              <span className="font-bold text-lg">🌾 田んぼ管理</span>
-              <button onClick={() => setOpen(false)} className="p-1 hover:bg-green-600 rounded">
+          <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setOpen(false)} />
+          <div className="fixed top-0 right-0 z-50 h-full w-72 bg-white text-gray-800 shadow-2xl flex flex-col">
+            {/* ドロワーヘッダー */}
+            <div className="flex items-center justify-between px-4 py-4 bg-green-700 text-white">
+              <div>
+                <div className="font-bold text-base">🌾 みのり</div>
+                <div className="text-xs text-green-200 mt-0.5">{userName}</div>
+              </div>
+              <button onClick={() => setOpen(false)} className="p-2 hover:bg-green-600 rounded-lg transition-colors">
                 <X size={20} />
               </button>
             </div>
-            <div className="px-3 py-2 text-sm text-green-200">{userName}</div>
-            <nav className="flex flex-col px-2 py-2 gap-1 flex-1">
+            {/* ナビリンク */}
+            <nav className="flex flex-col py-2 flex-1 overflow-y-auto">
               {links.map(l => (
                 <Link
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="px-3 py-2.5 rounded-lg hover:bg-green-600 text-sm font-medium transition-colors"
+                  className="flex items-center px-5 py-3.5 hover:bg-gray-50 text-sm font-medium transition-colors border-b border-gray-50"
                 >
                   {l.label}
                 </Link>

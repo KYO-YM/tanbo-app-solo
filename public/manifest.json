@@ -1,10 +1,12 @@
 {
-  "name": "田んぼ管理",
-  "short_name": "田んぼ",
+  "name": "みのり",
+  "short_name": "みのり",
   "description": "田んぼの所有区画と作業進捗を地図で管理するアプリ",
   "start_url": "/map",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "background_color": "#15803d",
   "theme_color": "#15803d",
   "lang": "ja",
   "icons": [

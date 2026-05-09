@@ -111,7 +111,7 @@ export default function CalendarClient({
         </div>
         <div className="grid grid-cols-7">
           {Array.from({ length: firstDow }).map((_, i) => (
-            <div key={`empty-${i}`} className="min-h-14 border-b border-r border-gray-50" />
+            <div key={`empty-${i}`} className="min-h-[60px] border-b border-r border-gray-50" />
           ))}
           {Array.from({ length: daysInMonth }).map((_, i) => {
             const day = i + 1
@@ -126,20 +126,20 @@ export default function CalendarClient({
               <div
                 key={day}
                 onClick={() => setSelectedDate(isSelected ? null : dateStr)}
-                className={`min-h-14 border-b border-r border-gray-50 p-1 cursor-pointer transition-colors
-                  ${isSelected ? 'bg-green-50' : 'hover:bg-gray-50'}`}
+                className={`min-h-[60px] border-b border-r border-gray-50 p-1.5 cursor-pointer transition-colors
+                  ${isSelected ? 'bg-green-50' : 'hover:bg-gray-50'} active:bg-green-50`}
               >
-                <div className={`text-xs font-medium w-6 h-6 flex items-center justify-center rounded-full mb-0.5
+                <div className={`text-xs font-medium w-7 h-7 flex items-center justify-center rounded-full mb-0.5
                   ${isToday ? 'bg-green-600 text-white' : col === 0 ? 'text-red-500' : col === 6 ? 'text-blue-500' : 'text-gray-700'}`}>
                   {day}
                 </div>
                 <div className="flex flex-wrap gap-0.5">
-                  {dayRecords.slice(0, 3).map(r => (
-                    <span key={r.id} className={`w-1.5 h-1.5 rounded-full ${DOT_COLOR[r.status] ?? 'bg-gray-300'}`} />
+                  {dayRecords.slice(0, 2).map(r => (
+                    <span key={r.id} className={`w-2 h-2 rounded-full ${DOT_COLOR[r.status] ?? 'bg-gray-300'}`} />
                   ))}
-                  {dayRecords.length > 3 && <span className="text-gray-400 text-[9px] leading-none">+{dayRecords.length - 3}</span>}
-                  {dayRice.map((e, idx) => (
-                    <span key={idx} className="text-[9px] leading-none">{e.emoji}</span>
+                  {dayRecords.length > 2 && <span className="text-gray-400 text-[9px] leading-none">+{dayRecords.length - 2}</span>}
+                  {dayRice.slice(0, 2).map((e, idx) => (
+                    <span key={idx} className="text-[10px] leading-none">{e.emoji}</span>
                   ))}
                 </div>
               </div>
