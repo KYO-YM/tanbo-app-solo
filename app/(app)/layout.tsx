@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { UserCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import LogoutButton from './LogoutButton'
@@ -23,10 +24,18 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         {/* ロゴ */}
         <Link href="/map" className="font-bold text-lg">🌾 みのり</Link>
         {/* デスクトップ: ナビリンク */}
-        <div className="hidden sm:flex items-center gap-4">
+        <div className="hidden sm:flex items-center gap-3">
           <NavMenu userName={userName} />
-          <span className="text-sm opacity-80">{userName}</span>
-          <LogoutButton />
+          {/* メニューとユーザー情報の区切り線 */}
+          <div className="h-5 w-px bg-green-500 opacity-60" />
+          {/* ユーザー情報 */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 bg-green-800/60 border border-green-500/40 px-2.5 py-1 rounded-full">
+              <UserCircle size={13} className="opacity-80" />
+              <span className="text-xs">{userName}</span>
+            </div>
+            <LogoutButton />
+          </div>
         </div>
         {/* モバイル: ハンバーガー + ログアウト */}
         <div className="flex sm:hidden items-center gap-1">
