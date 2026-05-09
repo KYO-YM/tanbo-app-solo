@@ -1,13 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Settings } from 'lucide-react'
 
 interface Props {
   userName: string
 }
 
-const links = [
+const mainLinks = [
   { href: '/map', label: '地図' },
   { href: '/dashboard', label: 'ダッシュボード' },
   { href: '/fields', label: '田んぼ一覧' },
@@ -17,23 +17,65 @@ const links = [
   { href: '/harvests', label: '収穫量' },
   { href: '/expenses', label: '費用管理' },
   { href: '/pesticide', label: '農薬・肥料記録' },
+]
+
+const settingsLinks = [
   { href: '/work-types', label: '作業マスタ' },
   { href: '/settings', label: '設定' },
   { href: '/guide', label: '使い方' },
 ]
 
+const links = [...mainLinks, ...settingsLinks]
+
 export default function NavMenu({ userName }: Props) {
   const [open, setOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const settingsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!settingsOpen) return
+    const handleClick = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+        setSettingsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [settingsOpen])
 
   return (
     <>
       {/* デスクトップ: ナビリンク */}
-      <nav className="hidden sm:flex gap-3 text-sm">
-        {links.map(l => (
+      <nav className="hidden sm:flex gap-3 text-sm items-center">
+        {mainLinks.map(l => (
           <Link key={l.href} href={l.href} className="hover:underline opacity-90 hover:opacity-100">
             {l.label}
           </Link>
         ))}
+        {/* 設定系ドロップダウン */}
+        <div className="relative" ref={settingsRef}>
+          <button
+            onClick={() => setSettingsOpen(v => !v)}
+            className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-green-600 transition-colors opacity-90 hover:opacity-100"
+            aria-label="設定メニューを開く"
+          >
+            <Settings size={18} />
+          </button>
+          {settingsOpen && (
+            <div className="absolute right-0 top-full mt-1 w-40 bg-white text-gray-800 rounded-lg shadow-lg border border-gray-100 z-[1500] py-1">
+              {settingsLinks.map(l => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setSettingsOpen(false)}
+                  className="block px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors"
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
 
       {/* モバイル: ハンバーガーボタン */}

@@ -35,11 +35,24 @@ export default async function MapPage({
       />
       {fields.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-white rounded-xl shadow p-6 text-center pointer-events-auto">
-            <p className="text-gray-500 mb-2">田んぼがまだ登録されていません</p>
-            <a href="/fields" className="text-green-600 text-sm font-medium hover:underline">
-              田んぼ一覧 → 筆ポリゴンデータを取込む
-            </a>
+          <div className="bg-white rounded-xl shadow-lg p-8 text-center pointer-events-auto max-w-sm mx-4">
+            <div className="text-4xl mb-3">🌾</div>
+            <h2 className="text-gray-800 font-bold text-lg mb-2">はじめに田んぼを登録しましょう</h2>
+            <p className="text-gray-500 text-sm mb-6">農水省の筆ポリゴンデータを取込むと、地図上に田んぼが表示されます</p>
+            <div className="flex flex-col gap-3">
+              <a
+                href="/guide"
+                className="block bg-green-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-green-800 transition-colors"
+              >
+                使い方ガイドを見る
+              </a>
+              <a
+                href="/fields"
+                className="block border border-green-700 text-green-700 text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors"
+              >
+                田んぼを登録する
+              </a>
+            </div>
           </div>
         </div>
       )}

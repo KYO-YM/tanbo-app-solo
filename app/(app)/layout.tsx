@@ -10,19 +10,20 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('name')
-    .eq('id', user.id)
-    .single()
+  const [profileRes, fieldCountRes] = await Promise.all([
+    supabase.from('profiles').select('name').eq('id', user.id).single(),
+    supabase.from('fields').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+  ])
 
-  const userName = profile?.name ?? user.email ?? ''
+  const userName = profileRes.data?.name ?? user.email ?? ''
+  const fieldCount = fieldCountRes.count ?? 0
+  const logoHref = fieldCount > 0 ? '/map' : '/dashboard'
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="bg-green-700 text-white px-4 py-3 flex items-center justify-between flex-shrink-0" style={{ paddingTop: 'max(0.75rem, env(safe-area-inset-top))' }}>
         {/* ロゴ */}
-        <Link href="/map" className="font-bold text-lg">🌾 みのり</Link>
+        <Link href={logoHref} className="font-bold text-lg">🌾 みのり</Link>
         {/* デスクトップ: ナビリンク */}
         <div className="hidden sm:flex items-center gap-3">
           <NavMenu userName={userName} />
