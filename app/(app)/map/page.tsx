@@ -23,7 +23,7 @@ export default async function MapPage({
   const workTypes = workTypesRes.data ?? []
 
   return (
-    <div className="relative w-full h-[calc(100vh-56px)]">
+    <div className="relative w-full h-[calc(100svh-56px)]">
       <Suspense>
         <WorkTypeFilter workTypes={workTypes} selectedId={work_type ?? null} />
       </Suspense>

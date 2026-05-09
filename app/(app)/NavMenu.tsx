@@ -48,8 +48,8 @@ export default function NavMenu({ userName }: Props) {
       {/* モバイル: ドロワー（右から） */}
       {open && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setOpen(false)} />
-          <div className="fixed top-0 right-0 z-50 h-full w-72 bg-white text-gray-800 shadow-2xl flex flex-col">
+          <div className="fixed inset-0 z-[1999] bg-black/40" onClick={() => setOpen(false)} />
+          <div className="fixed top-0 right-0 z-[2000] h-full w-72 bg-white text-gray-800 shadow-2xl flex flex-col">
             {/* ドロワーヘッダー */}
             <div className="flex items-center justify-between px-4 py-4 bg-green-700 text-white">
               <div>
